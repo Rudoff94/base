@@ -15,22 +15,25 @@ class Motor
     }
     void setup(int port1_, int port2_)
     {
-      port1 = port2_;
+      port1 = port1_;
       port2 = port2_;
       pinMode(port1, OUTPUT);
       pinMode(port2, OUTPUT);
     }
-    void setMotor(bool dir, int power)
+    
+    void setMotor(bool dir, int _power)
     {
       if (dir == FORWARD)
       {
-        analogWrite(port1, power);
+        power = _power;
         digitalWrite(port2, 0);
+        analogWrite(port1, power);
       }
       else
       {
-        analogWrite(port2, power);
+        power = _power;
         digitalWrite(port1, 0);
+        analogWrite(port2, power);
       }
     }
 
