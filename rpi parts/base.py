@@ -10,12 +10,12 @@ class Base:
 
 	def find_arduino(self):
 		dev_list = os.listdir('/dev')
-		patern = r'/dev/ttyUSB[0-9]'
+		patern = r'ttyUSB[0-9]'
 
 		for cur_dev in dev_list:
-			if cur_dev == patern:
+			if re.match(patern, cur_dev):
 				print("Device: ", cur_dev)
-				self.arduino = serial.Serial('/dev/ttyUSB0', self.speed)
+				self.arduino = serial.Serial('/dev/' + cur_dev, self.speed)
 				return True
 		self.arduino = None
 		print("Cannot find Arduino at list... ")
@@ -26,7 +26,9 @@ class Base:
 			if (motor >= ArduinoCommand.MOTOR_L and motor <= ArduinoCommand.MOTOR_R):
 				if (dir >= ArduinoCommand.BACKWARD and dir <= ArduinoCommand.FORWARD):
 					if (power >= ArduinoCommand.MINPOWER and power <= ArduinoCommand.MAXPOWER): 
-						message = [motor, dir, power]
+						#Проблема была в кодировке
+						#Для того, чтобы перевести число в байт: bytes([число])
+						message = [bytes([motor]), bytes([dir]), bytes([power])]
 						for i in message:
 							self.arduino.write(i)
 			print("Error in formating package")
