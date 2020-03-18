@@ -31,54 +31,13 @@ def get_signature(frame):
 			index_max = index
 
 		last_result = cur_result
-	index = (index_max + index_min) // 2
-	print(min, index_max)
-	return dif, lenOfVector, index
-
-
-
-
-
-
-def get_signature_2(frame):
-	last_result = np.linalg.norm(frame[:, 0])
-	cur_result = 0
-	
-	min = np.linalg.norm(frame[:, 1]) - last_result
-	max = np.linalg.norm(frame[:, 1]) - last_result
-
-	index_min = 0
-	index_max = 0
-	
-	lenOfVector = []
-	dif = []
-	
-	for index in range(1, frame.shape[1]):
-		cur_result = np.linalg.norm(frame[:, index])
-
-		lenOfVector.append(cur_result)
-		dif.append((cur_result - last_result))
-
-		if dif [-1] < min: 
-			min = dif[-1]
-			index_min = index
-
-		if dif [-1] > max: 
-			max = dif[-1]
-			index_max = index
-
-		last_result = cur_result
 	if index_min < index_max:
 		print("Line is black")
 		index = (index_max + index_min) // 2
 		print(min, index_max)
-		return dif, lenOfVector, index		
+		return index		
 	else:
 		return None
-		
-
-
-
 
 
 
@@ -106,36 +65,28 @@ def detect_black(frame, threshold):
 			break
 
 	result = (second_x + first_x) // 2
-	return result
-	#, lenOfVector
+	return result#, lenOfVector
 
 			
 
 
 def main():
+
 	#cam = cv2.VideoCapture(1)	
 	color = (0, 255, 0)
 	thinkness = 3
 
 	threshold = 4500
-	img = cv2.imread("WhiteLine.png", 0)
-#	cv2.imshow("image", img)
+	img = cv2.imread("blackline_2.png", 0)
 	#x = detect_black(img, threshold)
-	value = get_signature_2(img)
 
-	if value == None:
-		print("No black line detected")
-		return
-	else:
-		dif, len_of_vector, index = value
-
+	dif, len_of_vector, index = get_signature(img)
 
 	cord_x = [i for i in range(len(len_of_vector))]
 
 	
 	#Отрисовка графиков	
-
-	#plt.plot(cord_x, len_of_vector)
+	plt.plot(cord_x, len_of_vector)
 	plt.plot(cord_x, dif)
 	plt.show()
 	
