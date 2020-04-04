@@ -19,9 +19,34 @@ def main():
 	#init publisher
 	pub = rospy.Publisher('base/motor_control',BaseMotorControl, queue_size = 5)
 	sleep(1)
-	msg = BaseMotorControl()
+	msg_left_motor = BaseMotorControl()
+	msg_right_motor = BaseMotorControl()
 
-	while True:
+	#init closing
+	def close():
+		server.close()
+		rospy.loginfo('GAMEPAD_SERVER: stop server')
+	rospy.on_shutdown(close)
+	while not rospy.is_shutdown():
+		try:
+			conn, addr = server.accept()
+			rospy.loginfo('GAMEPAD_SERVER: connected to' + str(addr))
+			while conn:
+				len_pack = conn.recv(1)
+				len_pack = struct.unpack('B', len_pack)[0]
+				pack = conn.recv(len_pack)
+				pack_int = []
+				for bt in pack:
+					pack_int.append(struct.unpack('B', bt))
+				rospy.loginfo('Received data: ' + str(pack_int))
+
+
+
+		except socket.error:
+			rospy.loginfo('GAMEPAD_SERVER:Lost connection')
+		except KeyboardInterrupt:
+			close()
+			return
 		
 '''
 	while not rospy.is_shutdown():
