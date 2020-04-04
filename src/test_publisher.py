@@ -53,18 +53,18 @@ def main():
 				rospy.loginfo('Received data: ' + str(pack_int))
 				
 				#left_motor
-				if pack_int[1] > 0:
+				if pack_int[3] > 0:
 					msg_left_motor.direction = ArduinoCommand.FORWARD
-					msg_left_motor.power = pack_int[1]
+					msg_left_motor.power = pack_int[3]
 				else:
 					msg_left_motor.direction = ArduinoCommand.BACKWARD
-					msg_left_motor.power = -1 * pack_int[1]					
-				if pack_int[3] < 0:
+					msg_left_motor.power = -1 * pack_int[3]					
+				if pack_int[1] < 0:
 					msg_right_motor.direction = ArduinoCommand.FORWARD
-					msg_right_motor.power = -1 * pack_int[3]
+					msg_right_motor.power = -1 * pack_int[1]
 				else:
 					msg_right_motor.direction = ArduinoCommand.BACKWARD
-					msg_right_motor.power = pack_int[3]
+					msg_right_motor.power = pack_int[1]
 				pub.publish(msg_right_motor)
 				pub.publish(msg_left_motor)
 
