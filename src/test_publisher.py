@@ -9,7 +9,7 @@ from constants import *
 def main():
 	rospy.init_node('Test_node')
 	#server init
-	host = '192.168.2.108'
+	host = '192.168.0.106'
 	port = 2002
 	server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	server.bind((host, port))
