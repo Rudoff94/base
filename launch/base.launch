@@ -1,0 +1,5 @@
+<launch>
+    <include file="$(find mqtt_bridge)/launch/demo.launch"/>
+    <node name="base" pkg="rpi_platform_ros" type="base.py" output="screen"/>
+    <node name="joy_control" pkg="rpi_platform_ros" type="joy_controll_node.py" output="screen"/>
+</launch>
